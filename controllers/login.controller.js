@@ -92,7 +92,25 @@ const createUser = async (req, res) => {
   }
 };
 
+const uploadAvatar = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const { file } = req;
+    const pathImg = `http://localhost:6969/${file.path}`;
+    const updatedAvatar = await Users.findOneAndUpdate(
+      { username },
+      { avatar: pathImg }
+    );
+    if (updatedAvatar) {
+      res.json({ message: "Updated!" });
+    } else res.json({ message: "Update fail!" });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 module.exports = {
   login,
   createUser,
+  uploadAvatar,
 };
